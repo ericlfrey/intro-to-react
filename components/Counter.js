@@ -1,38 +1,57 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import styles from '../styles/counter.module.css';
 
-export default function Counter() {
+export default function Counter({ title }) {
   const [value, setValue] = useState(0);
 
-  const handleIncrement = () => {
-    setValue(value + 1);
+  const handleClick = () => {
+    setValue((currentVal) => currentVal + 1);
   };
-  const handleDecrement = () => {
-    setValue(value - 1);
-  };
-  const handleReset = () => {
-    setValue(0);
-  };
-
-  const buttons = [
-    { text: 'Increment', onClick: handleIncrement, variant: 'success' },
-    { text: 'Decrement', onClick: handleDecrement, variant: 'primary' },
-    { text: 'Reset', onClick: handleReset, variant: 'secondary' },
-  ];
 
   return (
-    <>
-      <h2>{value}</h2>
-      {buttons.map((button) => (
-        <Button
-          key={button.text}
-          onClick={button.onClick}
-          variant={button.variant}
-          className={styles.counterButton}
-        >{button.text}
-        </Button>
-      ))}
-    </>
+    <div>
+      {value === 5 ? (
+        'YOU ARE A WEINER'
+      ) : (
+        <>
+          <h1>{title}</h1>
+          <h2>{value}</h2>
+          <Button
+            type="button"
+            onClick={handleClick}
+            className={styles.counterButton}
+            variant={value <= 0 ? 'danger' : 'success'}
+          >Increment
+          </Button>
+          {value <= 0 ? (
+            ''
+          ) : (
+            <Button
+              type="button"
+              onClick={() => setValue((currentVal) => currentVal - 1)}
+              className={styles.counterButton}
+            >Decrement
+            </Button>
+          )}
+          <Button
+            type="button"
+            onClick={() => setValue(0)}
+            className={styles.counterButton}
+          >Reset
+          </Button>
+        </>
+      )}
+
+    </div>
   );
 }
+
+Counter.propTypes = {
+  title: PropTypes.string,
+};
+
+Counter.defaultProps = {
+  title: 'Counter Default',
+};
